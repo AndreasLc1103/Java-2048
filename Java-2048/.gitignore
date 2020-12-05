@@ -1,0 +1,5 @@
+.idea/*
+.idea/workspace.xml
+.idea/libraries/lib.xml
+out/*
+*.class
