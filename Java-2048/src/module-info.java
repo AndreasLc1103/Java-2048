@@ -1,4 +1,4 @@
-module gui {
+module Java {
     requires transitive javafx.controls;
-    exports gui;
+    exports Gui;
 }
