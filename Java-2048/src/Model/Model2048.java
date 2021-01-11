@@ -1,8 +1,6 @@
 package Model;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * This Class is a blueprint of the instance
@@ -18,6 +16,7 @@ public class Model2048 {
     private int numberOfValidMoves;
     private Tile[][] tile_board;
     private final int BOARD_DIM = 4;
+    private final int CURSOR_MAX = 2;
     private Random random;
 
     /**
@@ -45,7 +44,7 @@ public class Model2048 {
 
         for (int i = 0; i < BOARD_DIM; i++) {
             for (int j = 0; j < BOARD_DIM; j++) {
-                tile_board[i][j].setValue(0);
+                tile_board[i][j]= new Tile(Tile.EMPTY , i, j);
             }
         }
 
@@ -88,11 +87,62 @@ public class Model2048 {
      * @param second
      * @return
      */
-    public boolean match(Tile intial, Tile second) {
+    public static boolean match(Tile intial, Tile second) {
         if (intial.getValue() == second.getValue()) return true;
         return false;
     }
 
+    public void moveTiles(Directions directions) {
+        switch (directions) {
+            case RIGHT:
+                moveTilesRight();
+            case LEFT:
+                moveTilesLeft();
+            case DOWN:
+                moveTilesDown();
+            case UP:
+                moveTilesUp();
+            default:
+
+        }
+
+    }
+
+    /**
+     *
+     */
+    private void moveTilesRight() {
+        for (int row = 0; row <= BOARD_DIM; row++) {
+            for (int col = 0; col < CURSOR_MAX; col++) {
+                // this checks the tile next to the curent tile
+                if (tile_board[row][col].getValue() != Tile.EMPTY) {
+                    if (match(tile_board[row][col], tile_board[row][col + 1])) {
+                        // this sets the next tile to the new value
+                        tile_board[row][col + 1].incrementValue();
+                        // this sets the previous tile location to empty
+                        if (col == 1) {
+                            // sets the current tile equal to the previous
+                            tile_board[row][col] = tile_board[row][col - 1];
+                            //
+                            tile_board[row][col - 1].setLocation(tile_board[row][col].getLocation());
+                        }
+                        if (col == 2) {
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+    private void moveTilesLeft(){
+
+    }
+    private void moveTilesUp(){
+
+    }
+    private void moveTilesDown(){
+
+    }
 
 
 
