@@ -26,12 +26,14 @@ public class PTUI2048 implements Observer<Model2048> {
 
   public static void main(String[] args) {
     PTUI2048 ptui2048 = new PTUI2048();
+    System.out.println("Welcome to the game of 2048");
     ptui2048.run();
   }
-  /* View  */
+  /*=====================    View    =========================*/
 
   /**
-   *
+   * initializeView() is a function that allows for the plain text ui to be attached and added to
+   * the list of observers to the model.
    */
   private void initializeView() {
     this.gameBoard.addObserver(this);
@@ -39,7 +41,7 @@ public class PTUI2048 implements Observer<Model2048> {
 
 
   /**
-   * Updates the Plain Text User Interface of the game 2048
+   * update() updates the Plain Text User Interface of the game 2048.
    *
    * @param model2048 An instance of the model of the program.
    */
@@ -48,13 +50,13 @@ public class PTUI2048 implements Observer<Model2048> {
     System.out.println(this.gameBoard);
   }
 
+  /*===================== Controller=========================*/
+
 
   public void run() {
-    System.out.println("Welcome to the game of 2048");
     update(this.gameBoard);
-
     try (Scanner in = new Scanner(System.in)) {
-      System.out.println("use the W:Up S:Down A; Left");
+      System.out.println("use the W:UP S:DOWN A:LEFT D:RIGHT ");
       String input = in.next();
       switch (input.toLowerCase()) {
         case "d":
@@ -69,6 +71,9 @@ public class PTUI2048 implements Observer<Model2048> {
         case "s":
           this.gameBoard.moveTiles(Model2048.Directions.DOWN);
           break;
+        default:
+          System.out.println("Incorrect input Try again");
+          run();
       }
     }
 
