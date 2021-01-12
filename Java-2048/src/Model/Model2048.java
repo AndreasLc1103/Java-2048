@@ -47,11 +47,12 @@ public class Model2048 {
         tileBoard[row][col] = new Tile(Tile.EMPTY, row, col);
         // this allows to keep track of being able to grab values
         this.unOccupiedTiles.put(new Point(row, col), tileBoard[row][col]);
-
       }
 
 
     }
+    placeNewTile();
+    placeNewTile();
   }
 
   /**
@@ -70,23 +71,24 @@ public class Model2048 {
    * addObserver() adds an instance of an observer to the list of Observers. This function
    * 611following the Observer pattern
    *
-   * @param Observer instance of a class that implements the Observer interface
+   * @param observer instance of a class that implements the Observer interface
    */
-  public void addObserver(Observer<Model2048> Observer) {
-    this.observers.add(Observer);
+  public void addObserver(Observer<Model2048> observer) {
+    this.observers.add(observer);
   }
 
-  /** notifyObservers() calls the update method to notify all Observers in the list.
+  /**
+   * notifyObservers() calls the update method to notify all Observers in the list.
    */
   public void notifyObservers() {
     for (Observer<Model2048> watcher : this.observers) {
       watcher.update(this);
     }
-
   }
 
   /**
-   * SetTileAtPoint() sets the value of a tile on the board at the location passed.
+   * SetTileAtPoint() sets the value of a tile on the board at the location passed. This function
+   * also removes the new value from the unoccupied hashmap.
    *
    * @param point An Object that hold an X and Y coordinate.
    * @param value integer that the value of the tile is to be set to.
@@ -98,6 +100,37 @@ public class Model2048 {
   }
 
   /**
+   * placeNewTile() is a function to help generate a new tile at random open spot within the given
+   * tileBoard. This function will also be utilizing threads to allow for quicker computing of a
+   * random location to minimize collisions.
+   */
+  public void placeNewTile() {
+    // this randomly generates a new
+    int x = random.nextInt(BOARD_DIM);
+    int y = random.nextInt(BOARD_DIM);
+
+    if (unOccupiedTiles.get(new Point(x, y)) == null) {
+      // remove unoccupied tiles
+      unOccupiedTiles.remove(new Point(x, y));
+      // to simulate flipping a coin
+      int coin = random.nextInt(2);
+      // this will provide us with a tile of value 2
+      if (coin == 0) {
+        tileBoard[x][y] = new Tile(2, x, y);
+        // else case will place a tile with the value of 4
+      } else {
+        tileBoard[x][y] = new Tile(4, x, y);
+      }
+      // if the tile doesn't exist in then it recursively calls itself to generate new values
+    } else {
+
+      placeNewTile();
+    }
+
+
+  }
+
+  /**
    * MoveTiles() is a function based on the direction controls the model and moves tiles to resemble
    * the correct behavior.
    *
@@ -106,7 +139,6 @@ public class Model2048 {
   public void moveTiles(Directions directions) {
     switch (directions) {
       case RIGHT:
-        moveTilesRight();
         break;
       case LEFT:
         moveTilesLeft();
@@ -206,5 +238,4 @@ public class Model2048 {
   public enum Directions {
     RIGHT, LEFT, UP, DOWN
   }
-
 }
