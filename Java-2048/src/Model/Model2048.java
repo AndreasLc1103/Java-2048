@@ -1,5 +1,8 @@
 package Model;
 
+import java.io.LineNumberReader;
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,17 +58,7 @@ public class Model2048 {
     placeNewTile();
   }
 
-  /**
-   * Match() is a function that is used to compare to Tile objects, this function also acts as
-   * checker to see if the current tile if the initial tile's value matches the other.
-   *
-   * @param initial int to represent the number stored
-   * @param second  int to represent the number stored
-   * @return Boolean to indicate if passed
-   */
-  public static boolean match(Tile initial, Tile second) {
-    return initial.getValue() == second.getValue();
-  }
+
 
   /**
    * addObserver() adds an instance of an observer to the list of Observers. This function
@@ -123,7 +116,6 @@ public class Model2048 {
       }
       // if the tile doesn't exist in then it recursively calls itself to generate new values
     } else {
-
       placeNewTile();
     }
 
@@ -161,28 +153,8 @@ public class Model2048 {
    * matching values This function is still a work in progress.
    */
   private void moveTilesRight() {
-    for (int row = 0; row <= BOARD_DIM; row++) {
-      for (int col = 0; col < CURSOR_MAX; col++) {
-        // this checks the tile next to the curent tile
-        if (tileBoard[row][col].getValue() != Tile.EMPTY) {
-          if (match(tileBoard[row][col], tileBoard[row][col + 1])) {
-            // this sets the next tile to the new value
-            if (col == 1) {
-              Tile before = tileBoard[row][col - 1];
-              Tile current = tileBoard[row][col];
-              Tile after = tileBoard[row][col + 1];
-              // update after value
-              after.incrementValue();
-              // update the value from before to be the current
-              current.setValue(before.getValue());
-              //
-              before.setValue(Tile.EMPTY);
-            }
-          }
-        }
 
-      }
-    }
+    // this is to implement test behavior.
   }
 
   /**
